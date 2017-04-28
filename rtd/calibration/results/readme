@@ -1,0 +1,10 @@
+The rad probe is the probe c, which is wired using Dustin's method.
+RTD 1 to 8 is bised, and RTD 9 is the standard wiring method.
+The probe is located in the spot which is far from the deliver line.
+--------------------------------------------------------------------------------
+
+The pa is the probe a, wired using Kevin's method.
+This probe is near the deliver water.
+The readout of RTD 9 is weird.
+The readout of RTD 1 to 8 is similar with RTD 9 in probe C, i.e., the radiated 
+one.

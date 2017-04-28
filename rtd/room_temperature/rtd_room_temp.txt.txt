@@ -1,0 +1,29 @@
+calibrated A: 2.25
+calibrated B: 2.25
+calibrated C: 2.25
+
+probe (standard connection)
+B1: 2.236
+B2: 2.236
+B3: 2.236
+B4:  2.236
+B5:  2.236
+B6:  2.236
+B7:  2.236
+B8:  2.236
+B9:  2.236
+
+probe (B3 powered by 2.5V, B2 powered by B3, Dustin's wiring method)
+B2: 2.21
+B3: 2.23
+
+probe (B2 and B3 connected to a 2.5V port)
+B2: 2.236
+B3: 2.236
+
+probe A
+A1 to A9 all = 2.236
+
+room temperature is about 21 C
+2.25 -> 28.86 C
+2.236 -> 46.93 C
