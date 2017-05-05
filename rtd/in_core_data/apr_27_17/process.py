@@ -111,6 +111,10 @@ pb = v2t(pb, pb_cal)
 pc = t2v(pc)
 pc = v2t(pc, pc_cal)    
 
+np.savetxt('time_pump.txt', time)
+np.savetxt('center_pump.txt', pc)
+np.savetxt('middle_pump.txt', pa)
+np.savetxt('out_pump.txt', pb)
 
 rtd_plot(time, pa, 'probea')
 rtd_plot(time, pb, 'probeb')
@@ -157,6 +161,11 @@ pb = t2v(pb)
 pb = v2t(pb, pb_cal)
 pc = t2v(pc)
 pc = v2t(pc, pc_cal)   
+
+np.savetxt('time_nopump.txt', time)
+np.savetxt('center_nopump.txt', pc)
+np.savetxt('middle_nopump.txt', pa)
+np.savetxt('out_nopump.txt', pb)
 
 rtd_plot(time, pa, 'pa_nopump')
 rtd_plot(time, pb, 'pb_nopump')

@@ -44,11 +44,14 @@ for i in range(len(polyn[0 : -1])):
 
 core_data = np.loadtxt('../../in_core_data/measure_1_12_16_0.dat')
 time = core_data[:, 0] - core_data[0, 0]
+np.savetxt('inCore_time.txt', time)
 rtds = core_data[:, 1 :]
+ans = []
 plt.figure()
 for i in range(len(rtds[0])):
     artd = rtds[:, i]
     atemp = np.polyval(polyn[i], artd)
+    ans.append(atemp)
     if i == len(lib[0]) - 2:
         plt.plot(time / 60., atemp, '-', color = (.5, .3, .2), label = 'RTD %i'%i)
     elif i == len(lib[0]) - 1:
@@ -61,6 +64,8 @@ plt.ylabel('Temperature ($^o$C)')
 plt.legend(loc = 0)
 plt.savefig('core_rtd.pdf')
 plt.savefig('core_rtd.png')
+ans = np.array(ans).T
+np.savetxt('inCore_rtd_temp.txt', ans)
 
 # Kevin's wiring method
 lib = []
