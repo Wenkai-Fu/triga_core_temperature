@@ -274,8 +274,7 @@ def main():
     plt.title('Transient Temperature Data for 3 Probe Multipower Test')
 
     plt.legend(loc=2)
-    plt.savefig('fig_pumps.png')
-    plt.show()
+    plt.savefig('axially_averaged.png')
     plt.clf()
 
     plt.plot(pnpa_sum_time, pnpa_sum, 'b', label='Probe A')
@@ -286,9 +285,131 @@ def main():
     plt.title('Temperature Data for 3 Probe Multipower Test No Pumps')
 
     plt.legend(loc=2)
-    plt.savefig('fig_nopumps.png')
-    plt.show()
+    plt.savefig('axially_averaged_nopumps.png')
+    plt.clf()
 
+
+#######################################################################################################################
+# GENERATE PLOTS OF AXIALLY DEPENDANT TEMPERATURES
+#######################################################################################################################
+
+    si50 = int(6.2 * 60 * 2)
+    ei50 = int(18.6 * 60 * 2)
+
+    si100 = int(22 * 60 * 2)
+    ei100 = int(33 * 60 * 2)
+
+    si250 = int(36 * 60 * 2)
+    ei250 = int(48.5 * 60 * 2)
+
+    si500 = int(52 * 60 * 2)
+    ei500 = int(64 * 60 * 2)
+
+    print si50, ei50
+    print si100, ei100
+    print si250, ei250
+    print si500, ei500
+
+    rtd_locs = [14.51 + (4.7625* it) for it in range(9)]
+    print rtd_locs
+
+
+    a50 = []
+    a100 = []
+    a250 = []
+    a500 = []
+
+    b50 = []
+    b100 = []
+    b250 = []
+    b500 = []
+
+    c50 = []
+    c100 = []
+    c250 = []
+    c500 = []
+
+    for ind, it in enumerate(pa_dat):
+        pa_dat[ind] = [float(num) for num in pa_dat[ind]]
+        pb_dat[ind] = [float(num) for num in pb_dat[ind]]
+        pc_dat[ind] = [float(num) for num in pc_dat[ind]]
+
+    for index, it in enumerate(rtd_locs):
+
+        a50.append(sum(pa_dat[index][si50:ei50])/len(pa_dat[index][si50:ei50]))
+        a100.append(sum(pa_dat[index][si100:ei100])/len(pa_dat[index][si100:ei100]))
+        a250.append(sum(pa_dat[index][si250:ei250])/len(pa_dat[index][si250:ei250]))
+        a500.append(sum(pa_dat[index][si500:ei500])/len(pa_dat[index][si500:ei500]))
+
+        b50.append(sum(pb_dat[index][si50:ei50])/len(pb_dat[index][si50:ei50]))
+        b100.append(sum(pb_dat[index][si100:ei100])/len(pb_dat[index][si100:ei100]))
+        b250.append(sum(pb_dat[index][si250:ei250])/len(pb_dat[index][si250:ei250]))
+        b500.append(sum(pb_dat[index][si500:ei500])/len(pb_dat[index][si500:ei500]))
+
+        c50.append(sum(pc_dat[index][si50:ei50])/len(pc_dat[index][si50:ei50]))
+        c100.append(sum(pc_dat[index][si100:ei100])/len(pc_dat[index][si100:ei100]))
+        c250.append(sum(pc_dat[index][si250:ei250])/len(pc_dat[index][si250:ei250]))
+        c500.append(sum(pc_dat[index][si500:ei500])/len(pc_dat[index][si500:ei500]))
+
+
+
+    ali = [a50, a100, a250, a500]
+    bli = [b50, b100, b250, b500]
+    cli = [c50, c100, c250, c500]
+
+###########################################
+    #Probe A
+###########################################
+
+    for ind, item in enumerate(ali):
+        powers = [50, 100, 250, 500]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe A')
+    plt.legend(loc=2)
+    plt.savefig('pa_loc_v_temp.png')
+    plt.show()
+    plt.clf()
+
+###########################################
+    #Probe B
+###########################################
+
+    for ind, item in enumerate(bli):
+        powers = [50, 100, 250, 500]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe B')
+    plt.legend(loc=2)
+    plt.savefig('pb_loc_v_temp.png')
+    plt.show()
+    plt.clf()
+
+###########################################
+    #Probe C
+###########################################
+
+    for ind, item in enumerate(cli):
+        powers = [50, 100, 250, 500]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe C')
+    plt.legend(loc=2)
+    plt.savefig('pc_loc_v_temp.png')
+    plt.show()
+    plt.clf()
 
 
 def read_data(fname):
