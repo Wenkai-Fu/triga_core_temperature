@@ -180,9 +180,9 @@ def main():
 #Generate Times for each probe
 #######################################################################################################################
 
-    pnpa_time = [ind * 0.5 for  ind, it in enumerate(pnpa_dat[0])]
-    pnpb_time = [ind * 0.5 for  ind, it in enumerate(pnpb_dat[0])]
-    pnpc_time = [ind * 0.5 for  ind, it in enumerate(pnpc_dat[0])]
+  #  pnpa_time = [ind * 0.5 for  ind, it in enumerate(pnpa_dat[0])]
+  #  pnpb_time = [ind * 0.5 for  ind, it in enumerate(pnpb_dat[0])]
+  #  pnpc_time = [ind * 0.5 for  ind, it in enumerate(pnpc_dat[0])]
 
 
 
@@ -225,11 +225,6 @@ def main():
             pc_sum.append(sum([float(item) for item in [it, pc_dat[1][ind], pc_dat[2][ind], pc_dat[3][ind], pc_dat[4][ind], pc_dat[5][ind], pc_dat[6][ind], pc_dat[7][ind], pc_dat[8][ind]]])/9)
         except IndexError:
             pass
-
-    pa_sum_time = [ind * 0.5/60 for ind, item in enumerate(pa_sum)]
-    pb_sum_time = [ind * 0.5/60 for ind, item in enumerate(pa_sum)]
-    pc_sum_time = [ind * 0.5/60 for ind, item in enumerate(pa_sum)]
-
 
     ####################### pnpa_sum
     pnpa_sum = []
