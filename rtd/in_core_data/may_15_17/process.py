@@ -20,9 +20,9 @@ for i in range(9):
     if i < 7:
         plt.plot(time/60., probec[:, i], label = 'RTD %i'%(i+1))
     elif i == 7:
-        plt.plot(time/60., probec[:, i], 'b--', label = 'RTD %i'%(i+1))
+        plt.plot(time/60., probec[:, i], color = 'gray', label = 'RTD %i'%(i+1))
     elif i == 8:
-        plt.plot(time/60., probec[:, i], 'g--', label = 'RTD %i'%(i+1))
+        plt.plot(time/60., probec[:, i], color = 'greenyellow', label = 'RTD %i'%(i+1))
 plt.xlabel('Time (min)')
 plt.ylabel('Temperature ($^o$C)')
 plt.legend(loc = 'upper right')
