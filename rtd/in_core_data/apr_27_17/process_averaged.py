@@ -412,6 +412,115 @@ def main():
     plt.clf()
 
 
+#######################################################################################################################
+# GENERATE PLOTS OF AXIALLY DEPENDANT TEMPERATURES FOR NOPUMPS
+#######################################################################################################################
+
+    si1001 = int(5 * 60 * 2)
+    ei1001 = int(29 * 60 * 2)
+
+    si250 = int(33 * 60 * 2)
+    ei250 = int(60 * 60 * 2)
+
+    si1002 = int(63 * 60 * 2)
+    ei1002 = int(89 * 60 * 2)
+
+
+    rtd_locs = [14.51 + (4.7625* it) for it in range(9)]
+
+
+
+    a1001 = []
+    a250 = []
+    a1002 = []
+
+    b1001 = []
+    b250 = []
+    b1002 = []
+
+    c1001 = []
+    c250 = []
+    c1002 = []
+
+    for ind, it in enumerate(pa_dat):
+        pnpa_dat[ind] = [float(num) for num in pnpa_dat[ind]]
+        pnpb_dat[ind] = [float(num) for num in pnpb_dat[ind]]
+        pnpc_dat[ind] = [float(num) for num in pnpc_dat[ind]]
+
+    for index, it in enumerate(rtd_locs):
+
+        a1001.append(sum(pnpa_dat[index][si1001:ei1001])/len(pnpa_dat[index][si1001:ei1001]))
+        a250.append(sum(pnpa_dat[index][si250:ei250])/len(pnpa_dat[index][si250:ei250]))
+        a1002.append(sum(pnpa_dat[index][si1002:ei1002])/len(pnpa_dat[index][si1002:ei1002]))
+
+        b1001.append(sum(pnpb_dat[index][si1001:ei1001])/len(pnpb_dat[index][si1001:ei1001]))
+        b250.append(sum(pnpb_dat[index][si250:ei250])/len(pnpb_dat[index][si250:ei250]))
+        b1002.append(sum(pnpb_dat[index][si1002:ei1002])/len(pnpb_dat[index][si1002:ei1002]))
+
+        c1001.append(sum(pnpc_dat[index][si1001:ei1001])/len(pnpc_dat[index][si1001:ei1001]))
+        c250.append(sum(pnpc_dat[index][si250:ei250])/len(pnpc_dat[index][si250:ei250]))
+        c1002.append(sum(pnpc_dat[index][si1002:ei1002])/len(pnpc_dat[index][si1002:ei1002]))
+
+
+    ali = [a1001, a250, a1002]
+    bli = [b1001, b250, b1002]
+    cli = [c1001, c250, c1002]
+
+###########################################
+    #Probe A NP
+###########################################
+
+    for ind, item in enumerate(ali):
+        powers = [ 100, 250, 100]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe A No Pumps')
+    plt.legend(loc=2)
+    plt.savefig('pnpa_loc_v_temp.png')
+    plt.show()
+    plt.clf()
+
+###########################################
+    #Probe B NP
+###########################################
+
+    for ind, item in enumerate(bli):
+        powers = [ 100, 250, 100]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe B No Pumps')
+    plt.legend(loc=2)
+    plt.savefig('pnpb_loc_v_temp.png')
+    plt.show()
+    plt.clf()
+
+###########################################
+    #Probe C NP
+###########################################
+
+    for ind, item in enumerate(cli):
+        powers = [ 100 , 250, 100]
+        clr = ['b', 'g', 'y', 'r']
+
+        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location in Probe C No Pumps')
+    plt.legend(loc=2)
+    plt.savefig('pnpc_loc_v_temp.png')
+    plt.show()
+    plt.clf()
+
+
 def read_data(fname):
     '''
 
