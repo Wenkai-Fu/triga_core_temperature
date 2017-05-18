@@ -55,9 +55,9 @@ def rtd_plot(time, temp, name):
         if i < 7:
             plt.plot(time / 60., temp[:, i], label = 'RTD %i'% (i+1))
         elif i == 7:
-            plt.plot(time / 60., temp[:, i], 'b--', label = 'RTD %i'% (i+1))
+            plt.plot(time / 60., temp[:, i], color='gray', label = 'RTD %i'% (i+1))
         elif i == 8:
-            plt.plot(time / 60., temp[:, i], 'g--', label = 'RTD %i'% (i+1))
+            plt.plot(time / 60., temp[:, i], color='greenyellow', label = 'RTD %i'% (i+1))
     plt.xlabel('Time (min)')
     plt.ylabel('Temperature ($^o$C)')
     plt.legend(loc = 0)
