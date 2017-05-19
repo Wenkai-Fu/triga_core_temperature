@@ -26,6 +26,15 @@ The convertion equation used is
     T = -1338.89 * V + 3014.74
 """
 
+# RTD locations in the probe
+length = 1.2
+start = 14.51 + length * 0.5
+space = 4.7625
+distance = []
+for i in range(9):
+    d = start + i * space 
+    distance.append(d)
+    
 def t2v(a):
     """In measurement, for easy check the realistic temperature, all the RTDs
     use the above equation to convert voltage to temperature. Now we change 
@@ -62,6 +71,7 @@ def rtd_plot(time, temp, name):
     plt.ylabel('Temperature ($^o$C)')
     plt.legend(loc = 0)
     plt.savefig('%s.pdf'%name)
+    plt.savefig('%s.png'%name)
 
 # calibration equations for different RTDs
 pa_cal = np.loadtxt('pa_kw_cal_eq.txt')
@@ -120,6 +130,45 @@ rtd_plot(time, pa, 'probea')
 rtd_plot(time, pb, 'probeb')
 rtd_plot(time, pc, 'probec')
 
+# calculate the axial average over time values
+# time index of steady-state of the 4 power levels
+time_min = time / 60.
+p1s = np.searchsorted(time_min, 8.3)
+p1e = np.searchsorted(time_min, 17.4)
+p2s = np.searchsorted(time_min, 22.6)
+p2e = np.searchsorted(time_min, 32.0)
+p3s = np.searchsorted(time_min, 37.7)
+p3e = np.searchsorted(time_min, 47.5)
+p4s = np.searchsorted(time_min, 52.6)
+p4e = np.searchsorted(time_min, 63.2)
+
+def ave_pump(probe):
+    ave1 = np.average(probe[p1s : p1e], axis = 0)
+    ave2 = np.average(probe[p2s : p2e], axis = 0)
+    ave3 = np.average(probe[p3s : p3e], axis = 0)
+    ave4 = np.average(probe[p4s : p4e], axis = 0)
+    return ave1, ave2, ave3, ave4
+
+avea = ave_pump(pa)
+aveb = ave_pump(pb)
+avec = ave_pump(pc)
+
+power = ['50kW', '100kW', '250kW', '500kW']
+
+def pump_plot(ave, name):
+    plt.figure()
+    for i in range(len(ave)):
+        plt.plot(distance, ave[i], marker = 's', label = power[i])
+    plt.xlabel('Distance from probe tip (cm)')
+    plt.ylabel('Temperature ($^o$C)')
+    plt.grid()
+    plt.legend(loc = 0)
+    plt.savefig('%s.pdf'%name)
+    
+pump_plot(avea, 'pa_pump_ave')
+pump_plot(aveb, 'pb_pump_ave')
+pump_plot(avec, 'pc_pump_ave')
+
 """*************************************************************************
 In the second phase, the pump is off. The power levels are 100 -> 250
 -> 100 kw, each lasts for 30 min.
@@ -170,6 +219,62 @@ np.savetxt('out_nopump.txt', pb)
 rtd_plot(time, pa, 'pa_nopump')
 rtd_plot(time, pb, 'pb_nopump')
 rtd_plot(time, pc, 'pc_nopump')
+
+""" axial average over time, no pump
+time selected to do the average is
+10 to 20 min for the first 100kW
+40 to 50 min for the second 250kW
+70 to 80 min for the last 100 kW"""
+
+time_min = time / 60.
+i10 = np.searchsorted(time_min, 10.)
+i20 = np.searchsorted(time_min, 20.)
+i40 = np.searchsorted(time_min, 40.)
+i50 = np.searchsorted(time_min, 50.)
+i70 = np.searchsorted(time_min, 70.)
+i80 = np.searchsorted(time_min, 80.)
+
+
+def cal_average(probe):
+    """ Calculate axial temperature averaged over time of 3 power levels"""
+    ave1 = np.average(probe[i10 : i20], axis = 0)
+    ave2 = np.average(probe[i40 : i50], axis = 0)
+    ave3 = np.average(probe[i70 : i80], axis = 0)
+    return ave1, ave2, ave3
+
+
+avea = cal_average(pa)
+aveb = cal_average(pb)
+avec = cal_average(pc)
+
+power = ['100kW', '250kW', '100kW']
+
+def ave_plot(probe, name):
+    """Plot the axial average of the three power levels of the no-pump case"""
+    plt.figure()
+    for i in range(len(probe)):
+        plt.plot(distance, probe[i], marker = 's', label = power[i])
+    plt.xlabel('Distance from probe tip (cm)')
+    plt.ylabel('Temperature ($^o$C)')
+    plt.grid()
+    plt.legend(loc = 0)
+    plt.savefig('%s.pdf'%name)
+    
+ave_plot(avea, 'pa_axialAve_nopump')
+ave_plot(aveb, 'pb_axialAve_nopump')
+ave_plot(avec, 'pc_axialAve_nopump')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
