@@ -372,7 +372,7 @@ def main():
     plt.title('Temperature versus Axial Location in Probe A')
     plt.legend(loc=2)
     plt.savefig('pa_loc_v_temp.png')
-    plt.show()
+    #plt.show()
     plt.clf()
 
 ###########################################
@@ -390,7 +390,7 @@ def main():
     plt.title('Temperature versus Axial Location in Probe B')
     plt.legend(loc=2)
     plt.savefig('pb_loc_v_temp.png')
-    plt.show()
+    #plt.show()
     plt.clf()
 
 ###########################################
@@ -408,7 +408,7 @@ def main():
     plt.title('Temperature versus Axial Location in Probe C')
     plt.legend(loc=2)
     plt.savefig('pc_loc_v_temp.png')
-    plt.show()
+    #plt.show()
     plt.clf()
 
 
@@ -462,15 +462,15 @@ def main():
         c1002.append(sum(pnpc_dat[index][si1002:ei1002])/len(pnpc_dat[index][si1002:ei1002]))
 
 
-    ali = [a1001, a250, a1002]
-    bli = [b1001, b250, b1002]
-    cli = [c1001, c250, c1002]
+    ali2 = [a1001, a250, a1002]
+    bli2 = [b1001, b250, b1002]
+    cli2 = [c1001, c250, c1002]
 
 ###########################################
     #Probe A NP
 ###########################################
 
-    for ind, item in enumerate(ali):
+    for ind, item in enumerate(ali2):
         powers = [ 100, 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
@@ -481,14 +481,14 @@ def main():
     plt.title('Temperature versus Axial Location in Probe A No Pumps')
     plt.legend(loc=2)
     plt.savefig('pnpa_loc_v_temp.png')
-    plt.show()
+    #plt.show()
     plt.clf()
 
 ###########################################
     #Probe B NP
 ###########################################
 
-    for ind, item in enumerate(bli):
+    for ind, item in enumerate(bli2):
         powers = [ 100, 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
@@ -499,14 +499,14 @@ def main():
     plt.title('Temperature versus Axial Location in Probe B No Pumps')
     plt.legend(loc=2)
     plt.savefig('pnpb_loc_v_temp.png')
-    plt.show()
+    #plt.show()
     plt.clf()
 
 ###########################################
     #Probe C NP
 ###########################################
 
-    for ind, item in enumerate(cli):
+    for ind, item in enumerate(cli2):
         powers = [ 100 , 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
@@ -517,8 +517,59 @@ def main():
     plt.title('Temperature versus Axial Location in Probe C No Pumps')
     plt.legend(loc=2)
     plt.savefig('pnpc_loc_v_temp.png')
+    #plt.show()
+    plt.clf()
+
+    ##########################################################
+
+    plt.plot(rtd_locs, ali[2], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli[2], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli[2], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 250 kW Pumps')
+    plt.savefig('tvloc_250p.png')
+    plt.legend(loc=1)
     plt.show()
     plt.clf()
+
+    plt.plot(rtd_locs, ali2[1], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli2[1], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli2[1], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 250 kW No Pumps')
+    plt.savefig('tvloc_250np.png')
+    plt.legend(loc=2)
+    plt.show()
+    plt.clf()
+
+
+    plt.plot(rtd_locs, ali[1], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli[1], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli[1], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 100 kW Pumps')
+    plt.savefig('tvloc_100p.png')
+    plt.legend(loc=1)
+    plt.show()
+    plt.clf()
+
+
+    plt.plot(rtd_locs, ali2[0], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli2[0], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli2[0], 'go-', label='Probe C' )
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 100 kW No Pumps')
+    plt.savefig('tvloc_100np.png')
+    plt.legend(loc=2)
+    plt.show()
+    plt.clf()
+
+
 
 
 def read_data(fname):
