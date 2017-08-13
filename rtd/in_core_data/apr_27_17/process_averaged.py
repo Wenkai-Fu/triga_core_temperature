@@ -357,6 +357,48 @@ def main():
     bli = [b50, b100, b250, b500]
     cli = [c50, c100, c250, c500]
 
+
+
+    a50err = []
+    a100err = []
+    a250err = []
+    a500err = []
+
+    b50err = []
+    b100err = []
+    b250err = []
+    b500err = []
+
+
+    c50err = []
+    c100err = []
+    c250err = []
+    c500err = []
+
+    for index, itm in enumerate(a50):
+
+
+
+        a50err.append(max(pa_dat[index][si50:ei50])-a50[index])
+        a100err.append(max(pa_dat[index][si100:ei100])-a100[index])
+        a250err.append(max(pa_dat[index][si250:ei250])-a250[index])
+        a500err.append(max(pa_dat[index][si500:ei500])-a500[index])
+
+        b50err.append(max(pb_dat[index][si50:ei50])-b50[index])
+        b100err.append(max(pb_dat[index][si100:ei100])-b100[index])
+        b250err.append(max(pb_dat[index][si250:ei250])-b250[index])
+        b500err.append(max(pb_dat[index][si500:ei500])-b500[index])
+
+        c50err.append(max(pc_dat[index][si50:ei50])-c50[index])
+        c100err.append(max(pc_dat[index][si100:ei100])-c100[index])
+        c250err.append(max(pc_dat[index][si250:ei250])-c250[index])
+        c500err.append(max(pc_dat[index][si500:ei500])-c500[index])
+
+
+    aerr= [a50err, a100err, a250err, a500err]
+    berr= [b50err, b100err, b250err, b500err]
+    cerr= [c50err, c100err, c250err, c500err]
+
 ###########################################
     #Probe A
 ###########################################
@@ -365,7 +407,7 @@ def main():
         powers = [50, 100, 250, 500]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item, yerr = aerr[ind],  fmt ='{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -383,7 +425,7 @@ def main():
         powers = [50, 100, 250, 500]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item, yerr = berr[ind],  fmt = '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -401,7 +443,7 @@ def main():
         powers = [50, 100, 250, 500]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item,yerr=cerr[ind], fmt= '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -462,19 +504,53 @@ def main():
         c1002.append(sum(pnpc_dat[index][si1002:ei1002])/len(pnpc_dat[index][si1002:ei1002]))
 
 
-    ali = [a1001, a250, a1002]
-    bli = [b1001, b250, b1002]
-    cli = [c1001, c250, c1002]
+    ali2 = [a1001, a250, a1002]
+    bli2 = [b1001, b250, b1002]
+    cli2 = [c1001, c250, c1002]
+
+    a1001err = []
+    a250err = []
+    a1002err = []
+
+    b1001err = []
+    b250err = []
+    b1002err = []
+
+    c1001err = []
+    c250err = []
+    c1002err = []
+
+
+    for index, itm in enumerate(a1001):
+
+
+        a1001err.append(max(pnpa_dat[index][si1001:ei1001])-a1001[index])
+        a250err.append(max(pnpa_dat[index][si250:ei250])-a250[index])
+        a1002err.append(max(pnpa_dat[index][si1002:ei1002])-a1001[index])
+
+        b1001err.append(max(pnpb_dat[index][si1001:ei1001])-b1001[index])
+        b250err.append(max(pnpb_dat[index][si250:ei250])-b250[index])
+        b1002err.append(max(pnpb_dat[index][si1002:ei1002])-b1002[index])
+
+        c1001err.append(max(pnpc_dat[index][si1001:ei1001])-c1001[index])
+        c250err.append(max(pnpc_dat[index][si250:ei250])-c250[index])
+        c1002err.append(max(pnpc_dat[index][si1002:ei1002])-c1002[index])
+
+
+    anperr = [a1001err, a250err, a1002err]
+    bnperr = [b1001err, b250err, b1002err]
+    cnperr = [c1001err, c250err, c1002err]
+
 
 ###########################################
     #Probe A NP
 ###########################################
 
-    for ind, item in enumerate(ali):
+    for ind, item in enumerate(ali2):
         powers = [ 100, 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item,yerr= anperr[ind], fmt = '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -488,11 +564,11 @@ def main():
     #Probe B NP
 ###########################################
 
-    for ind, item in enumerate(bli):
+    for ind, item in enumerate(bli2):
         powers = [ 100, 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item,yerr=bnperr[ind], fmt='{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -506,11 +582,11 @@ def main():
     #Probe C NP
 ###########################################
 
-    for ind, item in enumerate(cli):
+    for ind, item in enumerate(cli2):
         powers = [ 100 , 250, 100]
         clr = ['b', 'g', 'y', 'r']
 
-        plt.plot(rtd_locs, item, '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
+        plt.errorbar(rtd_locs, item,yerr = cnperr[ind], fmt = '{}o-'.format(clr[ind]), label='{} kW'.format(powers[ind]))
 
     plt.xlabel('Distance from tip of probe (cm)')
     plt.ylabel('Temperature (C)')
@@ -520,11 +596,60 @@ def main():
     plt.show()
     plt.clf()
 
+    ##########################################################
+
+    plt.plot(rtd_locs, ali[2], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli[2], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli[2], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 250 kW Pumps')
+    plt.savefig('tvloc_250p.png')
+    plt.legend(loc=1)
+    plt.show()
+    plt.clf()
+
+    plt.plot(rtd_locs, ali2[1], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli2[1], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli2[1], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 250 kW No Pumps')
+    plt.savefig('tvloc_250np.png')
+    plt.legend(loc=2)
+    plt.show()
+    plt.clf()
+
+
+    plt.plot(rtd_locs, ali[1], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli[1], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli[1], 'go-', label='Probe C' )
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 100 kW Pumps')
+    plt.savefig('tvloc_100p.png')
+    plt.legend(loc=1)
+    plt.show()
+    plt.clf()
+
+
+    plt.plot(rtd_locs, ali2[0], 'bo-', label='Probe A' )
+    plt.plot(rtd_locs, bli2[0], 'ro-', label='Probe B' )
+    plt.plot(rtd_locs, cli2[0], 'go-', label='Probe C' )
+
+    plt.xlabel('Distance from tip of probe (cm)')
+    plt.ylabel('Temperature (C)')
+    plt.title('Temperature versus Axial Location for 100 kW No Pumps')
+    plt.savefig('tvloc_100np.png')
+    plt.legend(loc=2)
+    plt.show()
+    plt.clf()
+
+
+
 
 def read_data(fname):
     '''
-
-
     :param fname: filename of loaded file
     :return: Tuple
     1st item is tru_time (adjusted time to start at 0 seconds and step in 0.5 secs)
