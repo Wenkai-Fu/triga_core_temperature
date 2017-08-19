@@ -36,6 +36,9 @@ if rank == 0:
     temp = np.transpose(temp) # (space, time)
     # consistent with the experimental alignment, i.e.,
     # space[0] is the first entry at the probe bottom
+    
+    # Flip sensor data upside down to be consistent with the real geometric 
+    # alignment
     temp = np.flipud(temp)
     
     plt.figure()
@@ -46,6 +49,7 @@ if rank == 0:
     plt.xticks(rotation='vertical')
     plt.savefig('fiber_data.pdf')
     
+    # continuous the time grids
     time = np.loadtxt('FiberTime.csv')
     t = np.zeros(len(time))
     t[0] = time[0]
@@ -86,6 +90,7 @@ if rank == 0:
         acol = temp[:, t]
         # 9 RTDs
         for i in range(9):
+            # average of the a RTD region
             rt = np.average(acol[indexes[i]])
             rtd_temp.append(rt)
         rtd.append(rtd_temp)
@@ -107,6 +112,7 @@ if rank == 0:
     plt.legend(loc = 0)
     plt.savefig('fiber_at_rtd.pdf')
     plt.savefig('fiber_at_rtd.png')
+    
     
     # find temperature profile outside the RTD location
     indexes = []

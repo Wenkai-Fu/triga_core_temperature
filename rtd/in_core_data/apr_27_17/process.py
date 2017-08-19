@@ -56,8 +56,9 @@ def v2t(voltage, polyn):
         temp[:, i] = tmp
     return temp
 
-def rtd_plot(time, temp, name):
-    """plot the 9 RTD readout of each probe
+def rtd_plot(time, temp, name, xys):
+    """plot the 9 RTD readout of each probe as a function of time
+    xys: list of the xy location of the power levels
     """
     plt.figure()
     for i in range(len(temp[0])):
@@ -66,12 +67,23 @@ def rtd_plot(time, temp, name):
         elif i == 7:
             plt.plot(time / 60., temp[:, i], color='gray', label = 'RTD %i'% (i+1))
         elif i == 8:
-            plt.plot(time / 60., temp[:, i], color='greenyellow', label = 'RTD %i'% (i+1))
+            plt.plot(time / 60., temp[:, i], color='saddlebrown', label = 'RTD %i'% (i+1))
     plt.xlabel('Time (min)')
-    plt.ylabel('Temperature ($^o$C)')
+    plt.ylabel('Temperature ($^\circ$C)')
     plt.legend(loc = 0)
+    
+    for item in xys:
+        plt.text(item[0], item[1], item[2])
+        
+    if name == 'pb_nopump':
+        plt.ylim(ymin = 18)
+        plt.legend(loc = 'upper left')
+        plt.ylim(ymax = 45)
+        
+    if name == 'pc_nopump':
+        plt.ylim(ymax = 42)
+        
     plt.savefig('%s.pdf'%name)
-    plt.savefig('%s.png'%name)
 
 # calibration equations for different RTDs
 pa_cal = np.loadtxt('pa_kw_cal_eq.txt')
@@ -126,9 +138,15 @@ np.savetxt('center_pump.txt', pc)
 np.savetxt('middle_pump.txt', pa)
 np.savetxt('out_pump.txt', pb)
 
-rtd_plot(time, pa, 'probea')
-rtd_plot(time, pb, 'probeb')
-rtd_plot(time, pc, 'probec')
+xys_pa = [[10, 25, '50kW'], [25, 28.2, '100kW'], [40, 39.8, '250kW'],
+       [55, 56, '500kW']]
+xys_pb = [[10, 25, '50kW'], [25, 31, '100kW'], [40, 42, '250kW'],
+       [55, 56, '500kW']]
+xys_pc = [[10, 21, '50kW'], [25, 23, '100kW'], [40, 30, '250kW'],
+       [55, 46, '500kW']]
+rtd_plot(time, pa, 'probea', xys_pa)
+rtd_plot(time, pb, 'probeb', xys_pb)
+rtd_plot(time, pc, 'probec', xys_pc)
 
 # calculate the axial average over time values
 # time index of steady-state of the 4 power levels
@@ -154,11 +172,15 @@ aveb = ave_pump(pb)
 avec = ave_pump(pc)
 
 power = ['50kW', '100kW', '250kW', '500kW']
+linesty = ['-', '--', ':', '-.']
+colors = ['b', 'r', 'g', 'm']
+marks = ['o', 'p', 's', '*']
 
 def pump_plot(ave, name):
     plt.figure()
     for i in range(len(ave)):
-        plt.plot(distance, ave[i], marker = 's', label = power[i])
+        plt.plot(distance, ave[i], marker = marks[i], color = colors[i],
+                 ls = linesty[i], label = power[i])
     plt.xlabel('Distance from probe tip (cm)')
     plt.ylabel('Temperature ($^o$C)')
     plt.grid()
@@ -216,9 +238,12 @@ np.savetxt('center_nopump.txt', pc)
 np.savetxt('middle_nopump.txt', pa)
 np.savetxt('out_nopump.txt', pb)
 
-rtd_plot(time, pa, 'pa_nopump')
-rtd_plot(time, pb, 'pb_nopump')
-rtd_plot(time, pc, 'pc_nopump')
+xys_pa = [[10, 27, '100kW'], [40, 36, '250kW'], [70, 35.5, '100kW']]
+xys_pb = [[10, 20, '100kW'], [40, 23, '250kW'], [70, 27, '100kW']]
+xys_pc = [[10, 17, '100kW'], [40, 19.2, '250kW'], [70, 24, '100kW']]
+rtd_plot(time, pa, 'pa_nopump', xys_pa)
+rtd_plot(time, pb, 'pb_nopump', xys_pb)
+rtd_plot(time, pc, 'pc_nopump', xys_pc)
 
 """ axial average over time, no pump
 time selected to do the average is
@@ -248,12 +273,16 @@ aveb = cal_average(pb)
 avec = cal_average(pc)
 
 power = ['100kW', '250kW', '100kW']
+linesty = ['--', ':', '-']
+colors = ['r', 'g', 'k']
+mks = ['p', 's', '^']
 
 def ave_plot(probe, name):
     """Plot the axial average of the three power levels of the no-pump case"""
     plt.figure()
     for i in range(len(probe)):
-        plt.plot(distance, probe[i], marker = 's', label = power[i])
+        plt.plot(distance, probe[i], marker = mks[i], color = colors[i],
+                 ls = linesty[i], label = power[i])
     plt.xlabel('Distance from probe tip (cm)')
     plt.ylabel('Temperature ($^o$C)')
     plt.grid()
