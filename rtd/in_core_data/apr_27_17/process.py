@@ -70,6 +70,7 @@ def rtd_plot(time, temp, name):
     plt.xlabel('Time (min)')
     plt.ylabel('Temperature ($^o$C)')
     plt.legend(loc = 0)
+    plt.savefig('%s.pdf'%name)
     plt.savefig('%s.png'%name)
 
 # calibration equations for different RTDs
@@ -139,52 +140,30 @@ p2e = np.searchsorted(time_min, 32.0)
 p3s = np.searchsorted(time_min, 37.7)
 p3e = np.searchsorted(time_min, 47.5)
 p4s = np.searchsorted(time_min, 52.6)
-p4s = np.searchsorted(time_min, 50)
 p4e = np.searchsorted(time_min, 63.2)
 
-def cal_ave_std(data):
-    std = ((np.mean(data ** 2) - np.mean(data) ** 2)) ** .5 / (len(data) - 1) ** .5
-    return std
-
-def cal_std(data):
-    std = ((np.mean(data ** 2) - np.mean(data) ** 2)) ** .5 #/ (len(data) - 1) ** .5
-    return std
-
 def ave_pump(probe):
-    # compute the axial average of a probe in the four power periods
     ave1 = np.average(probe[p1s : p1e], axis = 0)
-    std1 = cal_ave_std(probe[p1s : p1e])
-    
     ave2 = np.average(probe[p2s : p2e], axis = 0)
-    std2 = cal_ave_std(probe[p2s : p2e])
-    
     ave3 = np.average(probe[p3s : p3e], axis = 0)
-    std3 = cal_ave_std(probe[p3s : p3e])
-    
     ave4 = np.average(probe[p4s : p4e], axis = 0)
-    std4 = cal_ave_std(probe[p4s : p4e])
-    
-    return ave1, std1, ave2, std2, ave3, std3, ave4, std4
+    return ave1, ave2, ave3, ave4
 
 avea = ave_pump(pa)
 aveb = ave_pump(pb)
 avec = ave_pump(pc)
 
 power = ['50kW', '100kW', '250kW', '500kW']
-linesty = ['-', '--', ':', '-.']
-colors = ['b', 'r', 'g', 'm']
-marks = ['o', 'p', 's', '*']
 
 def pump_plot(ave, name):
     plt.figure()
-    for i in range(4):
-        plt.errorbar(distance, ave[i * 2], yerr=ave[i*2+1], 
-                     fmt= marks[i]+colors[i]+ linesty[i], label = power[i], ecolor = colors[i])
+    for i in range(len(ave)):
+        plt.plot(distance, ave[i], marker = 's', label = power[i])
     plt.xlabel('Distance from probe tip (cm)')
     plt.ylabel('Temperature ($^o$C)')
     plt.grid()
     plt.legend(loc = 0)
-    plt.savefig('%s.png'%name)
+    plt.savefig('%s.pdf'%name)
     
 pump_plot(avea, 'pa_pump_ave')
 pump_plot(aveb, 'pb_pump_ave')
@@ -259,12 +238,9 @@ i80 = np.searchsorted(time_min, 80.)
 def cal_average(probe):
     """ Calculate axial temperature averaged over time of 3 power levels"""
     ave1 = np.average(probe[i10 : i20], axis = 0)
-    std1 = cal_std(probe[i10 : i20])
     ave2 = np.average(probe[i40 : i50], axis = 0)
-    std2 = cal_std(probe[i40 : i50])
     ave3 = np.average(probe[i70 : i80], axis = 0)
-    std3 = cal_std(probe[i70 : i80])
-    return ave1, ave2, ave3, std1, std2, std3
+    return ave1, ave2, ave3
 
 
 avea = cal_average(pa)
@@ -272,21 +248,17 @@ aveb = cal_average(pb)
 avec = cal_average(pc)
 
 power = ['100kW', '250kW', '100kW']
-linesty = ['--', ':', '-']
-colors = ['r', 'g', 'k']
-mks = ['p', 's', '^']
 
 def ave_plot(probe, name):
     """Plot the axial average of the three power levels of the no-pump case"""
     plt.figure()
-    for i in range(3):
-        plt.errorbar(distance, probe[i], yerr=probe[i + 3], 
-                     fmt= mks[i]+colors[i]+ linesty[i], label = power[i], ecolor = colors[i])
+    for i in range(len(probe)):
+        plt.plot(distance, probe[i], marker = 's', label = power[i])
     plt.xlabel('Distance from probe tip (cm)')
     plt.ylabel('Temperature ($^o$C)')
     plt.grid()
     plt.legend(loc = 0)
-    plt.savefig('%s.png'%name)
+    plt.savefig('%s.pdf'%name)
     
 ave_plot(avea, 'pa_axialAve_nopump')
 ave_plot(aveb, 'pb_axialAve_nopump')
