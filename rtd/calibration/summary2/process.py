@@ -100,14 +100,33 @@ for i in range(len(rad_k[0])):
     plt.plot(rad_k[:, i], temp, marker = mks[i], color = colors[i], ls='None',
               label = 'RTD %i'%(i+1), ms=8)
 plt.grid()
-# plt.plot(rad_k[:, 0], fit, 'k-')
-# plt.text(2.192, 50, 'T = %.2f V + %.2f\nFitting using the RTD0 data'%\
-#          (ap[0], ap[1]))
 plt.legend(loc = 0)
 plt.ylabel('Temperature ($^o$C)')
 plt.xlabel('Voltage (V)')
 plt.ylim((25, 85))
 plt.savefig('rad_pc_k.pdf')
+
+# compute the RTD resistance based on the measured voltage across the 1000-ohm 
+# resistor. The total voltage applied to RTD and the resistor is 2.5 V.
+rtd_r = 1e3 * (2.5 - rad_k) / rad_k
+plt.figure()
+for i in range(len(rad_k[0])):
+    plt.plot(rtd_r[:, i], temp, marker = mks[i], color = colors[i], ls='None',
+              label = 'RTD %i'%(i+1), ms=8)
+plt.xlabel('Resistance of the RTD ($\Omega$)')
+plt.ylabel('Temperature ($^o$C)')
+plt.ylim((25, 85))
+plt.grid(True)
+plt.legend(loc = 0)
+plt.savefig('rtd_resistance_pc.png')
+
+max_r = max(rtd_r[-1])
+print 'The max resistance of the RTD is {:.6f} ohm'.format(max_r)
+t_coeff = (rtd_r[0, -1] - rtd_r[0, 0]) / (temp[-1] - temp[0])
+t0 = rtd_r[0, 0] - t_coeff * 30
+print 'The resistance of RTD at temperature at 0C = %.6f ohm'%t0
+
+
 
 # probe b using kevin wiring
 pb = []
