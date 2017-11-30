@@ -37,10 +37,20 @@ if rank == 0:
     # consistent with the experimental alignment, i.e.,
     # space[0] is the first entry at the probe bottom
     
+    # spatial T distribution of a time grid
+    atime = temp[:, 5500]
+    plt.figure()
+    plt.plot(range(len(atime)), atime, 'k-')
+    plt.xlabel('Sensor')
+    plt.ylabel('Temperature (C)')
+    plt.grid(True)
+    plt.savefig('spaceT.png')
+    
     # Flip sensor data upside down to be consistent with the real geometric 
-    # alignment
+    # alignment, i.e., space[0] is nearest to probe tip
     temp = np.flipud(temp)
     
+    # time and space plot
     plt.figure()
     plt.imshow(temp, cmap = 'Blues', origin='lower', interpolation='nearest')
     plt.colorbar()
