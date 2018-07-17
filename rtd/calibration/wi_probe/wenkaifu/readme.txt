@@ -1,9 +1,9 @@
 The three RTD probes (A to C) for UW-Madison were calibrated.
-Ambient temperature is 25.3C. 
+Ambient temperature is 25.3C (filename *_25.dat) and 22.3C (filename *_22.dat).
 
 The connection is:
 
-T7PRO 139 (result file name = pAB_139_0.dat):
+T7PRO 139 (result file name = pAB_139_T.dat, T=22 or 25):
 AIN 0  | A1, 1red
 AIN 1  | A2, 1orange
 AIN 2  | A3, 1white
@@ -19,7 +19,7 @@ AIN 11 | B4, 2red
 AIN 12 | B5, 2orange
 AIN 13 | B6, 2white
 
-T7PRO 166 (result file name = pC_166_0.dat):
+T7PRO 166 (result file name = pC_166_T.dat, T=22 or 25):
 AIN 0  | C1, 1red
 AIN 1  | C2, 1orange
 AIN 2  | C3, 1white
