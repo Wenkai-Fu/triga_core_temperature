@@ -6,8 +6,8 @@ pb_avev = np.zeros((6, 2))
 pc_avev = np.zeros((6, 2))
 
 # measured voltage of the new WI probes in air, T = 25.3C
-labjack139 = np.loadtxt('../wenkaifu/pAB_139_25.dat')
-labjack166 = np.loadtxt('../wenkaifu/pC_166_25.dat')
+labjack139 = np.loadtxt('../wenkaifu/pab_139_air25.dat')
+labjack166 = np.loadtxt('../wenkaifu/pc_166_air25.dat')
 pa = labjack139[:, 1 : 7]
 pb = labjack139[:, -6 :]
 pc = labjack166[:, 1 : 7]
@@ -17,8 +17,8 @@ pb_avev[:, 0] = np.average(pb, axis = 0)
 pc_avev[:, 0] = np.average(pc, axis = 0)
 
 # measured voltage of the new WI probes in air, T = 22.3C
-labjack139 = np.loadtxt('../wenkaifu/pab_139_22.dat')
-labjack166 = np.loadtxt('../wenkaifu/pc_166_22.dat')
+labjack139 = np.loadtxt('../wenkaifu/pab_139_air22.dat')
+labjack166 = np.loadtxt('../wenkaifu/pc_166_air22.dat')
 pa = labjack139[:, 1 : 7]
 pb = labjack139[:, -6 :]
 pc = labjack166[:, 1 : 7]
@@ -37,7 +37,7 @@ plt.grid()
 plt.xlabel('Voltage (V)')
 plt.ylabel('Temperature (C)')
 plt.legend(loc = 0)
-plt.savefig('pa_uw_cal.pdf')
+plt.savefig('pa_uw_cal.png')
 
 plt.figure()
 for i in range(6):
@@ -46,7 +46,7 @@ plt.grid()
 plt.xlabel('Voltage (V)')
 plt.ylabel('Temperature (C)')
 plt.legend(loc = 0)
-plt.savefig('pb_uw_cal.pdf')
+plt.savefig('pb_uw_cal.png')
 
 plt.figure()
 for i in range(6):
@@ -55,7 +55,7 @@ plt.grid()
 plt.xlabel('Voltage (V)')
 plt.ylabel('Temperature (C)')
 plt.legend(loc = 0)
-plt.savefig('pc_uw_cal.pdf')
+plt.savefig('pc_uw_cal.png')
 
 # fit equations
 polyA = []
@@ -75,6 +75,36 @@ for i in range(6):
     poly = np.polyfit(pc_avev[i], tem, deg = 1)
     polyC.append(poly)
 np.savetxt('pCwi_cal_eq.txt', polyC)
+
+# verify fit equation with in-pool results. pass if the T = 24 or 25.
+labjack139 = np.loadtxt('../wenkaifu/pab_139_pool.dat')
+labjack166 = np.loadtxt('../wenkaifu/pc_166_pool.dat')
+pa = labjack139[:, 1 : 7]
+pb = labjack139[:, -6 :]
+pc = labjack166[:, 1 : 7]
+
+pa_ave_voltage = np.average(pa, axis = 0)
+pb_ave_voltage = np.average(pb, axis = 0)
+pc_ave_voltage = np.average(pc, axis = 0)
+
+paT = []
+pbT = []
+pcT = []
+for i in range(6):
+    paT.append(np.polyval(polyA[i], pa_ave_voltage[i]))
+    pbT.append(np.polyval(polyB[i], pb_ave_voltage[i]))
+    pcT.append(np.polyval(polyC[i], pc_ave_voltage[i]))
+
+print 'Measured probe A temperature is'
+print paT
+
+print 'Measured probe B temperature is'
+print pbT
+
+print 'Measured probe C temperature is'
+print pcT
+
+
 
 
 # check the fit equation with Dustin's in-pool results
@@ -106,7 +136,7 @@ for i in range(len(ogb2[0])):
     aT = np.polyval(poly, aveV)
     tem.append(aT)
     
-print 'measured temperature of the 8 RTDs in original probe b'
+print '\nmeasured temperature of the 8 RTDs in original probe b'
 print tem
 aveTog = np.average(tem)
 std = np.std(tem, ddof = 1)
